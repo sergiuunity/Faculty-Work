@@ -1,0 +1,39 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;B7
+    15                                      ;A string of doublewords T is given. Compute string R containing only high bytes from high words from eachdoubleword from string S.
+    16                                      ;If S = 12345678h, 1a2b3c4dh => D = 12h, 1ah(in mem: 12 | 1a)
+    17                                      ;s in mem: 78 | 56 | 34 | 12 ||| 4d | 3c | 2b | 1a |
+    18                                      ;so we search throuh 12, 1a => start = 3, step = 4
+    19 00000000 785634124D3C2B1A            s dd 12345678h, 1a2b3c4dh
+    20                                      ls  equ ($-s)/4
+    21 00000008 <res 00000008>              r resd ls
+    22                                  
+    23                                  ; our code starts here
+    24                                  segment code use32 class=code
+    25                                      start:
+    26                                          ; ...
+    27 00000000 BE03000000                      mov esi, 3;s
+    28 00000005 BF00000000                      mov edi, 0;r
+    29 0000000A B902000000                      mov ecx, ls
+    30                                          repeta:
+    31 0000000F 8A86[00000000]                      mov al, byte[s+esi]
+    32 00000015 8887[08000000]                      mov byte[r+edi], al
+    33 0000001B 83C604                              add esi, 4
+    34 0000001E 83C701                              add edi, 1
+    35 00000021 E2EC                            loop repeta
+    36                                      
+    37                                          ; exit(0)
+    38 00000023 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    39 00000025 FF15[00000000]                  call    [exit]       ; call exit to terminate the program

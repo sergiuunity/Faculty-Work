@@ -1,0 +1,42 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;a string of words is given
+    15                                      ;create the string D with the words in reversed order.
+    16                                      ;s=1234h,5678h
+    17                                      ;d=5678h,1234h
+    18 00000000 34127856                    s dw 1234h, 5678h;in men:34|12|78|56
+    19                                      ;                          0  1  2  3
+    20                                      ;                               esi; adresa de inceput al ultimului elem din sir
+    21                                      ls equ ($-s)/2
+    22 00000004 <res 00000004>              d resw ls
+    23                                  
+    24                                  ; our code starts here
+    25                                  segment code use32 class=code
+    26                                      start:
+    27                                          ; ...
+    28 00000000 66BE0200                        mov si, ls*2-2;poz esi la adresa 2; s
+    29 00000004 BF00000000                      mov edi, 0 ; d
+    30 00000009 B902000000                      mov ecx, ls
+    31                                          repeta:
+    32 0000000E 668B86[00000000]                    mov ax, word[s+esi];ax=5678h
+    33 00000015 668987[04000000]                    mov word[d+edi], ax
+    34 0000001C 83EE02                              sub esi,2
+    35 0000001F 83EF02                              sub edi,2
+    36 00000022 E2EA                            loop repeta
+    37                                              
+    38                                          
+    39                                          
+    40                                          ; exit(0)
+    41 00000024 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    42 00000026 FF15[00000000]                  call    [exit]       ; call exit to terminate the program

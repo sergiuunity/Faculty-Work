@@ -1,0 +1,78 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit, printf               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  import printf msvcrt.dll 
+    11                                  
+    12                                  ; our data is declared here (the variables needed by our program)
+    13                                  segment data use32 class=data
+    14                                      ; a*(-b) + c/5 - d
+    15                                      ;a byte
+    16                                      ;b word
+    17                                      ;c byte
+    18                                      ;d doubleword
+    19                                      ; print the result on screen
+    20 00000000 FC                          a db -4
+    21 00000001 0300                        b dw 3
+    22 00000003 0B                          c db 11
+    23 00000004 07000000                    d dd 7
+    24                                      ; signed
+    25 00000008 00000000                    aux dd 0
+    26 0000000C 72657A3A2025642069-         formatmsg db 'rez: %d in decimal and %x in hexdecimal', 0 ; asciiz
+    26 00000015 6E20646563696D616C-
+    26 0000001E 20616E642025782069-
+    26 00000027 6E2068657864656369-
+    26 00000030 6D616C00           
+    27                                      
+    28                                  ; our code starts here
+    29                                  segment code use32 class=code
+    30                                      start:
+    31                                          ; a*(-b)
+    32                                          ;-b
+    33 00000000 66A1[01000000]                  mov ax,[b]
+    34 00000006 66F7D8                          neg ax ; ax = -b
+    35                                          ; mov ax, 0
+    36                                          ;sub ax,[b]; ax = -b
+    37                                          ;a-> word
+    38 00000009 660FBE1D[00000000]              movsx bx, byte[a]
+    39 00000011 66F7EB                          imul bx ; dx:ax = a*(-b)
+    40                                          ;save dx:ax into aux
+    41 00000014 66A3[08000000]                  mov [aux+0], ax
+    42 0000001A 668915[0A000000]                mov [aux+2], dx
+    43                                          
+    44                                          ; c/5
+    45                                          ;c-> word ax
+    46 00000021 660FBE05[03000000]              movsx ax, byte[c]
+    47 00000029 B305                            mov bl, 5
+    48 0000002B F6FB                            idiv bl ; ax/5 = al cat, ah rest
+    49                                          
+    50                                          ;; a*(-b) + c/5 - d
+    51                                          ;   aux    + al  -dd
+    52                                          ;al->eax
+    53 0000002D 0FBEC0                          movsx eax, al
+    54 00000030 0305[08000000]                  add eax, [aux]
+    55 00000036 2B05[04000000]                  sub eax,[d]; rez este in eax
+    56                                          
+    57                                          ; print eax
+    58                                          ;printf (format, val de printat)
+    59                                          ; pe stiva de la dr la st
+    60                                          ;  formatmsg db 'rez: %d in decimal and %x in hexdecimal', 0 ; asciiz
+    61                                          ;                      eax              eax
+    62 0000003C 50                              push eax
+    63 0000003D 50                              push eax
+    64 0000003E 68[0C000000]                    push dword formatmsg
+    65 00000043 FF15[00000000]                  call [printf]
+    66 00000049 83C40C                          add esp, 4*3
+    67                                          
+    68                                          
+    69                                          
+    70                                          
+    71                                      
+    72                                          ; exit(0)
+    73 0000004C 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    74 0000004E FF15[00000000]                  call    [exit]       ; call exit to terminate the program

@@ -1,0 +1,50 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                  ;a+4-b-0101b+c
+    15 00000000 0A00                    a dw 10; word = 16 bits
+    16 00000002 02                      b db 2 ; byte = 8 bits
+    17 00000003 0C000000                c dd 0ch ; doubleword = 32 bits
+    18                                  
+    19                                  ; our code starts here
+    20                                  segment code use32 class=code
+    21                                      start:
+    22                                          ; ...
+    23                                      
+    24                                      ;a+4
+    25 00000000 668B1D[00000000]            mov bx,[a];bx=a=10
+    26 00000007 6683C304                    add bx, 4;bx=14=000Eh
+    27                                      
+    28                                      ; a+4-b-0101b
+    29                                      ;convert byte to word
+    30 0000000B 8A0D[02000000]              mov cl, [b]
+    31 00000011 B500                        mov ch, 0
+    32                                      ;cx = 0002h
+    33 00000013 6629CB                      sub bx, cx; bx = bx-cx = 12 = 000Ch
+    34                                      
+    35                                      ; a+4-b-0101b
+    36 00000016 6683EB05                    sub bx, 0101b; b - b for binary base
+    37                                      ;bx -bx-0101b-12-0101b = 7 = 0007h
+    38                                      ;convert cx to  a doubleword, for instance to EAX
+    39                                      
+    40 0000001A B800000000                  mov eax, 0
+    41 0000001F 6689D8                      mov ax, bx;
+    42                                      ;eax = 00000007h
+    43                                      
+    44                                      ;a+4-b-0101b+call
+    45 00000022 0305[03000000]              add eax, [c]; eax = 00000007h+0000000ch= 19 = 13h
+    46                                      
+    47                                      
+    48                                          ; exit(0)
+    49 00000028 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    50 0000002A FF15[00000000]                  call    [exit]       ; call exit to terminate the program

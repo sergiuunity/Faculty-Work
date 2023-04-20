@@ -1,0 +1,74 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;if a%7 este diferit de 0 atunci exp = a*7
+    15                                                               ;altfel exp = b/3 + c
+    16                                      ;a-word
+    17                                      ;b-byte
+    18                                      ;c-doubleword
+    19 00000000 3100                        a dw 49
+    20 00000002 C2                          b db -62
+    21 00000003 E8FFFFFF                    c dd -24
+    22 00000007 00000000                    exp dd 0
+    23                                      
+    24                                  ; our code starts here
+    25                                  segment code use32 class=code
+    26                                      start:
+    27                                          ; ...
+    28                                          ;a/7
+    29 00000000 B800000000                      mov eax, 0
+    30 00000005 A0[00000000]                    mov al, [a]
+    31 0000000A B307                            mov bl, 7
+    32 0000000C F6FB                            idiv bl
+    33                                          ;al-q, ah-r
+    34                                  
+    35                                          
+    36 0000000E 80FC00                          cmp ah, 0
+    37 00000011 7402                            JE egal
+    38 00000013 7520                            JNE diferit
+    39                                          
+    40                                          egal:
+    41                                              ;exp = b/3 + c
+    42                                              ;b/3
+    43 00000015 A0[02000000]                        mov al, [b]
+    44 0000001A 660FBEC0                            movsx ax,al
+    45 0000001E B303                                mov bl, 3
+    46 00000020 F6FB                                idiv bl
+    47                                              ;al-q, ah-r
+    48                                              
+    49                                              ;b/3 + c
+    50 00000022 BB00000000                          mov ebx, 0
+    51 00000027 88C3                                mov bl, al
+    52 00000029 031D[03000000]                      add ebx, [c]
+    53                                              ;ebx = b/3 + c = -44
+    54                                              
+    55 0000002F 891D[07000000]                      mov [exp], ebx
+    56                                              ;exp = b/3 + c = -44(pt. a=49)
+    57                                          
+    58                                          diferit:
+    59                                              ;exp = a*7
+    60 00000035 66B80700                            mov ax, 7
+    61 00000039 66F72D[00000000]                    imul word[a]
+    62                                              ;dx:ax = a*7
+    63 00000040 66A3[07000000]                      mov word[exp+0], ax
+    64 00000046 668915[09000000]                    mov word[exp+2], dx
+    65 0000004D A1[07000000]                        mov eax, [exp]
+    66                                              ;exp = a*7 = 350(pt. a=50)
+    67 00000052 EB00                                jmp endmyif
+    68                                          
+    69                                          endmyif:
+    70                                          
+    71                                          
+    72                                          ; exit(0)
+    73 00000054 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    74 00000056 FF15[00000000]                  call    [exit]       ; call exit to terminate the program

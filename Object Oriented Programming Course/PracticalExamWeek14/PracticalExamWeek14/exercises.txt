@@ -1,0 +1,6 @@
+squats 2 0.8
+calfRaises 2 0.3
+plank 1 0.9
+crunches 1 0.5
+dips 0 0.3
+benchPress 0 0.7

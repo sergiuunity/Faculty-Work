@@ -1,0 +1,54 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;A12. A string of bytes A is given.
+    15                                      ;Construct string B containing only values divisible with 5 from string A.
+    16                                      ;If A = 16, 20, 5, 18 => B = 20, 5
+    17 00000000 10140512                    a db 16, 20, 5, 18
+    18                                      la equ $-a
+    19 00000004 <res 00000004>              b resb la; se acorda la bytes in memorie pentru b
+    20 00000008 05                          nr db 5
+    21                                      
+    22                                      
+    23                                      
+    24                                  ; our code starts here
+    25                                  segment code use32 class=code
+    26                                      start:
+    27                                          ; ...
+    28 00000000 BE00000000                      mov esi, 0;a
+    29 00000005 BF00000000                      mov edi, 0;d
+    30 0000000A B904000000                      mov ecx, la
+    31                                          repeta:
+    32 0000000F 8A86[00000000]                      mov al, byte[a+esi]
+    33 00000015 88C3                                mov bl, al
+    34 00000017 6698                                cbw
+    35 00000019 F63D[08000000]                      idiv byte[nr];ah-rest
+    36 0000001F 80FC00                              cmp ah, 0
+    37 00000022 7402                                JE adaugaInB
+    38 00000024 750A                                JNE next
+    39                                                  adaugaInB:
+    40 00000026 889F[04000000]                              mov byte[b+edi], bl
+    41 0000002C 47                                          inc edi
+    42 0000002D 46                                          inc esi
+    43 0000002E EB01                                        jmp myendif
+    44                                                  next:
+    45 00000030 46                                          inc esi
+    46                                                      
+    47                                                  myendif:
+    48                                                  
+    49 00000031 E2DC                            loop repeta
+    50                                              
+    51                                      
+    52                                          ; exit(0)
+    53 00000033 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    54 00000035 FF15[00000000]                  call    [exit]       ; call exit to terminate the program

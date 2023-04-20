@@ -1,0 +1,9 @@
+Repository:database
+Location:DentistMAP
+Patients:Patient
+Appointments:Appointment
+
+Repository:json
+Location:
+Patients:text_files/appointments.json
+Appointments:text_files/appointments.json

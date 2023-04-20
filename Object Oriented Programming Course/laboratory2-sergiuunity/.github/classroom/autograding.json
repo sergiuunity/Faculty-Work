@@ -1,0 +1,144 @@
+{
+  "tests": [
+    {
+      "name": "PB 1 - test 1",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "2\r\n0\r\n1",
+      "output": "Invalid input! Application will now stop\r\n",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 1 - test 2",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "z",
+      "output": "Invalid input! Application will now stop\r\n",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 3",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "3\r\na b c",
+      "output": "Invalid input! Application will now stop",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 4",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "3 11 12 1",
+      "output": "The triplet with the maximum product 132 is (1, 11, 12)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 5",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "8 -11 12 1 40 70 90 40 -100",
+      "output": "The triplet with the maximum product 252000 is (40, 70, 90)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 6",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "8 -101 12 1 40 70 90 40 -100",
+      "output": "The triplet with the maximum product 909000 is (-101, -100, 90)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 7",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "17 -59 -83 -66 -60 -11 -36 -52 -82 -48 -26 -65 -35 -39 -13 -39 -59 -75",
+      "output": "The triplet with the maximum product -3718 is (-26, -13, -11)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 8",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "43 -59 1495 -93 1092 88 861 833 1841 1554 1165 1387 628 -18 1964 1425 391 786 1297 509 1118 656 1850 1693 53 192 1737 449 1744 637 814 1129 536 -92 893 1769 831 259 891 63 1358 1186 512 1696",
+      "output": "The triplet with the maximum product 6689089400 is (1841, 1850, 1964)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 1 - test 9",
+      "setup": "cd Problem1 && make",
+      "run": "cd Problem1 && ./pb1",
+      "input": "8 -1001 134002 100 40000 7000 9000 1440000 -10000",
+      "output": "The triplet with the maximum product 7718515200000000 is (40000, 134002, 1440000)",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 2 - test 1",
+      "setup": "cd Problem2 && make",
+      "run": "cd Problem2 && ./pb2 ",
+      "input": "",
+      "output": "Usage: pb2 <inputfile>\r\nApplication will now stop",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 2 - test 2",
+      "setup": "cd Problem2 && make",
+      "run": "cd Problem2 && ./pb2 inexistentfile.txt",
+      "input": "",
+      "output": "Failed to open file inexistentfile.txt. Application will now stop",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 2 - test 3",
+      "setup": "cd Problem2 && make",
+      "run": "cd Problem2 && ./pb2 1",
+      "input": "",
+      "output": "Failed to open file 1. Application will now stop",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 2 - test 4",
+      "setup": "cd Problem2 && make",
+      "run": "cd Problem2 && ./pb2 English.txt",
+      "input": "",
+      "output": "c Freq\r\n--------------\r\na  8.05%\r\nb  1.83%\r\nc  4.09%\r\nd  3.44%\r\ne 10.98%\r\nf  1.17%\r\ng  2.80%\r\nh  2.47%\r\ni  9.08%\r\nj  0.18%\r\nk  0.82%\r\nl  5.28%\r\nm  2.92%\r\nn  6.94%\r\no  6.44%\r\np  2.98%\r\nq  0.18%\r\nr  7.07%\r\ns  8.89%\r\nt  6.69%\r\nu  3.53%\r\nv  0.96%\r\nw  0.72%\r\nx  0.28%\r\ny  1.68%\r\nz  0.51%",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 7
+    },
+    {
+      "name": "PB 2 - test 5",
+      "setup": "cd Problem2 && make",
+      "run": "cd Problem2 && ./pb2 German.txt",
+      "input": "",
+      "output": "c Freq\r\n--------------\r\na  7.56%\r\nb  2.44%\r\nc  2.58%\r\nd  2.07%\r\ne 14.16%\r\nf  1.95%\r\ng  3.19%\r\nh  3.88%\r\ni  7.98%\r\nj  0.12%\r\nk  2.91%\r\nl  4.60%\r\nm  2.65%\r\nn  8.57%\r\no  3.79%\r\np  1.83%\r\nq  0.10%\r\nr  7.84%\r\ns  6.77%\r\nt  7.36%\r\nu  4.39%\r\nv  0.90%\r\nw  0.82%\r\nx  0.14%\r\ny  0.19%\r\nz  1.19%",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 7
+    }
+  ]
+}

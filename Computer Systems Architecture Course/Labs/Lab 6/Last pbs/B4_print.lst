@@ -1,0 +1,77 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit, printf                ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  import printf  msvcrt.dll
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;A string of words S is given. Compute string D containing only high bytes multiple of 7 from string S.
+    15                                      ;If S = 1735h, 0778h, 0E20h => D = 07h, 0Eh
+    16                                      ;S in mem: 35|17| 78|07| 20|0E
+    17                                      ;D:07, 0E - start=1 cu step=2->d in memorie 07 | 0E->print: 14 7
+    18 00000000 35177807200E                s dw 1735h, 0778h, 0E20h
+    19                                      ls equ ($-s)/2
+    20 00000006 <res 00000003>              d resb ls
+    21 00000009 07                          nr db 7
+    22 0000000A 00000000                    countingD dd 0
+    23 0000000E 54686520726573756C-         msj db 'The result is: '
+    23 00000017 742069733A20       
+    24 0000001D 00000000                    copie dd 0
+    25 00000021 25642000                    format db '%d ', 0
+    26                                  
+    27                                  ; our code starts here
+    28                                  segment code use32 class=code
+    29                                      start:
+    30                                          ; ...
+    31 00000000 BE01000000                      mov esi, 1;s
+    32 00000005 BF00000000                      mov edi, 0; d
+    33 0000000A B903000000                      mov ecx, ls
+    34                                          repeta:
+    35 0000000F 8A86[00000000]                      mov al, byte[s+esi]
+    36 00000015 88C3                                mov bl, al
+    37 00000017 6698                                cbw
+    38 00000019 F63D[09000000]                      idiv byte[nr]
+    39 0000001F 80FC00                              cmp ah, 0
+    40 00000022 7402                                je adaugaInD
+    41 00000024 7514                                jne next
+    42                                                  adaugaInD:
+    43 00000026 889F[06000000]                              mov byte[d+edi], bl
+    44 0000002C 83C701                                      add edi, 1
+    45 0000002F 83C602                                      add esi, 2
+    46 00000032 FF05[0A000000]                              inc dword[countingD]
+    47 00000038 EB03                                        jmp myendif
+    48                                                  next:
+    49 0000003A 83C602                                      add esi, 2
+    50                                                  myendif:
+    51 0000003D E2D0                            loop repeta
+    52                                          
+    53                                          ;printare mesaj
+    54 0000003F 68[0E000000]                    push dword msj
+    55 00000044 FF15[00000000]                  call [printf]
+    56                                          ;add esp, 4*1
+    57                                          
+    58                                          ; print string d
+    59 0000004A 8B0D[0A000000]                  mov ecx, [countingD]
+    60 00000050 BE00000000                      mov esi, 0
+    61                                          repetaprint:
+    62 00000055 8A86[06000000]                      mov al, byte[d+esi]
+    63 0000005B 0FBEC0                              movsx eax, al
+    64 0000005E 890D[1D000000]                      mov [copie], ecx
+    65 00000064 50                                  push eax
+    66 00000065 68[21000000]                        push dword format
+    67 0000006A FF15[00000000]                      call [printf]
+    68                                              ;add esp, 4*2
+    69 00000070 8B0D[1D000000]                      mov ecx, [copie]
+    70 00000076 83C601                              add esi, 1
+    71 00000079 E2DA                            loop repetaprint    
+    72                                  
+    73                                          
+    74                                          ; exit(0)
+    75 0000007B 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    76 0000007D FF15[00000000]                  call    [exit]       ; call exit to terminate the program

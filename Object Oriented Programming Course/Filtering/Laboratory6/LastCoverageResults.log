@@ -1,0 +1,21 @@
+[2022-04-18 22:12:05] [info] Start Program:
+Path:"D:\Informatica\C && C++\Object Oriented Programming Course\Filtering\x64\Debug\Laboratory6.exe"
+Arguments:
+Working directory: "D:\Informatica\C && C++\Object Oriented Programming Course\Filtering\Laboratory6\"
+Modules: Selected: D:\Informatica\C & C++\Object Oriented Programming Course\Filtering\x64\Debug\Laboratory6.exe Excluded: 
+Sources: Selected: D:\Informatica\C & C++\Object Oriented Programming Course\Filtering\Laboratory6 Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: Binary C:\Users\Sergiu\AppData\Local\Temp\wxhnfk4t.wjn 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2022-04-18 22:12:05] [info] Module: D:\Informatica\C & C++\Object Oriented Programming Course\Filtering\x64\Debug\Laboratory6.exe is selected because it matches selected pattern: D:\Informatica\C & C++\Object Oriented Programming Course\Filtering\x64\Debug\Laboratory6.exe
+[2022-04-18 22:12:08] [info] ----------------------------------------------------
+[2022-04-18 22:12:08] [info] Coverage binary generated in file: C:\Users\Sergiu\AppData\Local\Temp\wxhnfk4t.wjn
+[2022-04-18 22:12:08] [info] ----------------------------------------------------

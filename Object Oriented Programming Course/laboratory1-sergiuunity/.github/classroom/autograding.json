@@ -1,0 +1,194 @@
+{
+  "tests": [
+    {
+      "name": "PB 3 - test 1",
+      "setup": "cd Problem3 && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "10",
+      "output": "Invalid input, the year should be greater or equal to 1876",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test2",
+      "setup": "cd Problem3 && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "a",
+      "output": "Invalid input, the year should be greater or equal to 1876",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 3",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "12",
+      "output": "Invalid input, the year should be greater or equal to 1876",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 4",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1875",
+      "output": "Invalid input, the year should be greater or equal to 1876",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 5",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1934",
+      "output": "In 1934 the Easter date is April 01",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 6",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1935",
+      "output": "In 1935 the Easter date is April 21",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 7",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1991",
+      "output": "In 1991 the Easter date is March 31",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 8",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1989",
+      "output": "In 1989 the Easter date is March 26",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 9",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "1904",
+      "output": "In 1904 the Easter date is April 03",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 10",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "2070",
+      "output": "In 2070 the Easter date is March 30",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 11",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "2022",
+      "output": "In 2022 the Easter date is April 17",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 3 - test 12",
+      "setup": "cd Problem3 && make clean && make",
+      "run": "cd Problem3 && ./easter",
+      "input": "2068",
+      "output": "In 2068 the Easter date is April 22",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "PB 2 - test",
+      "setup": "cd Problem2 && make clean && make",
+      "run": "cd Problem2 && ./pincode",
+      "input": "",
+      "output": "9870\r\n9861\r\n9852\r\n9843\r\n9762\r\n9753\r\n9654\r\n8763\r\n8754",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 6
+    },
+    {
+      "name": "PB 4 - test 1",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "3\r\n123 566. 7.;'[][]`23445",
+      "output": "123 566. 7.;'[][]`23445",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 3
+    },
+    {
+      "name": "PB 4 - test 2",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "7\r\nCato, I grudge you your death, as you would have grudged me the preservation of your life.",
+      "output": "Jhav, P nybknl fvb fvby klhao, hz fvb dvbsk ohcl nybknlk tl aol wylzlychapvu vm fvby spml.",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 4 - test 3",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "-7\r\nJhav, P nybknl fvb fvby klhao, hz fvb dvbsk ohcl nybknlk tl aol wylzlychapvu vm fvby spml.",
+      "output": "Cato, I grudge you your death, as you would have grudged me the preservation of your life.",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 4 - test 5",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "0\r\nveni, vidi, vici",
+      "output": "veni, vidi, vici",
+      "comparison": "exact",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 4 - test 6",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "26\r\nIf he had anything confidential to say, he wrote it in cipher, that is, by so changing the order of the letters of the alphabet, that not a word could be made out.",
+      "output": "If he had anything confidential to say, he wrote it in cipher, that is, by so changing the order of the letters of the alphabet, that not a word could be made out.",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    },
+    {
+      "name": "PB 4 - test 7",
+      "setup": "cd Problem4 && make clean && make",
+      "run": "cd Problem4 && ./caesar_cipher",
+      "input": "10\r\nThe Battle of Pharsalus was the decisive battle of Caesar's Civil War fought on 9 August 48 BC near Pharsalus in central Greece. Julius Caesar and his allies formed up opposite the army of the Roman Republic under the command of Pompey.",
+      "output": "Dro Lkddvo yp Zrkbckvec gkc dro nomscsfo lkddvo yp Mkockb'c Msfsv Gkb pyeqrd yx 9 Keqecd 48 LM xokb Zrkbckvec sx moxdbkv Qboomo. Tevsec Mkockb kxn rsc kvvsoc pybwon ez yzzycsdo dro kbwi yp dro Bywkx Bozelvsm exnob dro mywwkxn yp Zywzoi.",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 2
+    }
+  ]
+}

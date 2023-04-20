@@ -1,0 +1,11 @@
+﻿  App.cpp
+  ExtendedTest.cpp
+D:\Informatica\C & C++\Data Structures and Algorithms\MIE Project\Project Itself\SH-SortedMultiMap\SH-SortedMultiMap\ExtendedTest.cpp(190,21): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Informatica\C & C++\Data Structures and Algorithms\MIE Project\Project Itself\SH-SortedMultiMap\SH-SortedMultiMap\ExtendedTest.cpp(223,21): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\Informatica\C & C++\Data Structures and Algorithms\MIE Project\Project Itself\SH-SortedMultiMap\SH-SortedMultiMap\ExtendedTest.cpp(208,20): warning C4101: 'ex': unreferenced local variable
+D:\Informatica\C & C++\Data Structures and Algorithms\MIE Project\Project Itself\SH-SortedMultiMap\SH-SortedMultiMap\ExtendedTest.cpp(215,20): warning C4101: 'ex': unreferenced local variable
+  SMMIterator.cpp
+  ShortTest.cpp
+  SortedMultiMap.cpp
+  Generating Code...
+  SH-SortedMultiMap.vcxproj -> D:\Informatica\C & C++\Data Structures and Algorithms\MIE Project\Project Itself\SH-SortedMultiMap\x64\Debug\SH-SortedMultiMap.exe

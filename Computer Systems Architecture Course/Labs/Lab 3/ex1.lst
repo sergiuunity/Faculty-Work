@@ -1,0 +1,96 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  
+    11                                  ; our data is declared here (the variables needed by our program)
+    12                                  segment data use32 class=data
+    13                                      ; ...
+    14                                      ;if a este par then
+    15                                       ;exp = 2*(-a)-b/c
+    16                                       ;else
+    17                                       ;exp=e-a/b
+    18                                       
+    19 00000000 06000000                     a dd 6
+    20 00000004 08                           b db 8
+    21 00000005 F4                           c db -12
+    22 00000006 1300000000000000             e dq 19
+    23 0000000E 0000000000000000             exp dq 0
+    24                                  
+    25                                  ; our code starts here
+    26                                  segment code use32 class=code
+    27                                      start:
+    28                                          ; ...
+    29                                          ;a/2
+    30                                          
+    31                                          ;mov eax, [a]
+    32                                          ;cdq
+    33                                          ;mov bx, 2
+    34                                          ;div bx
+    35                                          ;al-q,ah-r
+    36                                          ;sau
+    37 00000000 66A1[00000000]                  mov ax, [a+0]
+    38 00000006 668B15[02000000]                mov dx, [a+2]
+    39 0000000D 66BB0200                        mov bx, 2
+    40 00000011 66F7FB                          idiv bx;dx:ax/bx=ax q dx-r
+    41                                          
+    42                                          
+    43 00000014 80FC00                          cmp ah, 0
+    44 00000017 7402                            JE thenlabel
+    45 00000019 7536                            JNE elselabel
+    46                                          
+    47                                          thenlabel:
+    48 0000001B A1[00000000]                        mov eax, [a]
+    49 00000020 F7D8                                neg eax
+    50 00000022 BB02000000                          mov ebx, 2
+    51 00000027 F7EB                                imul ebx;edx:eax = 2*(-a)
+    52                                              ;edx:eax->ecx:ebx
+    53 00000029 89C3                                mov ebx,eax
+    54 0000002B 89D1                                mov ecx, edx
+    55                                              
+    56                                              ;b/c
+    57 0000002D 660FBE05[04000000]                  movsx ax, byte[b]
+    58 00000035 F63D[05000000]                      idiv byte[c]
+    59                                              ;al->edx:eax
+    60 0000003B 0FBEC0                              movsx eax, al
+    61 0000003E 99                                  cdq
+    62                                              ;ecx:ebx=2*(-a)     -
+    63                                              ;edx:eax = b/c
+    64 0000003F 29C3                                sub ebx,eax
+    65 00000041 19D1                                sbb ecx, edx
+    66 00000043 891D[0E000000]                      mov [exp+0], ebx
+    67 00000049 890D[12000000]                      mov [exp+4], ecx
+    68                                              
+    69 0000004F EB38                                jmp endlabel
+    70                                          
+    71                                          elselabel:
+    72                                              ;a/b
+    73 00000051 66A1[00000000]                      mov ax, [a+0]
+    74 00000057 668B15[02000000]                    mov dx, [a+2]
+    75 0000005E 660FBE1D[04000000]                  movsx bx, byte[b]
+    76 00000066 66F7FB                              idiv bx; dx:ax/bx = ax q
+    77 00000069 0FBEC0                              movsx eax, al
+    78 0000006C 99                                  cdq
+    79                                              ;e->ecx:ebx
+    80 0000006D 8B1D[06000000]                      mov ebx, [e+0]
+    81 00000073 8B0D[0A000000]                      mov ecx, [e+4]
+    82                                              ;ecx:ebx-
+    83                                              ;edx:eax
+    84 00000079 29C3                                sub ebx, eax
+    85 0000007B 19D1                                sbb ecx, edx
+    86 0000007D 891D[0E000000]                      mov [exp+0], ebx
+    87 00000083 890D[12000000]                      mov [exp+4], ecx
+    88                                              
+    89                                              
+    90                                              
+    91                                              
+    92                                          endlabel:
+    93                                      
+    94                                          ; exit(0)
+    95 00000089 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    96 0000008B FF15[00000000]                  call    [exit]       ; call exit to terminate the program

@@ -1,0 +1,68 @@
+     1                                  bits 32 ; assembling for the 32 bits architecture
+     2                                  
+     3                                  ; declare the EntryPoint (a label defining the very first instruction of the program)
+     4                                  global start        
+     5                                  
+     6                                  ; declare external functions needed by our program
+     7                                  extern exit, printf               ; tell nasm that exit exists even if we won't be defining it
+     8                                  import exit msvcrt.dll    ; exit is a function that ends the calling process. It is defined in msvcrt.dll
+     9                                                            ; msvcrt.dll contains exit, printf and all the other important C-runtime specific functions
+    10                                  import printf  msvcrt.dll
+    11                                  
+    12                                  ; our data is declared here (the variables needed by our program)
+    13                                  segment data use32 class=data
+    14                                      ; ...
+    15                                      ;e5 = a - b / c + 9/d 
+    16                                      ;a doubleword, b-byte, c –word, d- word
+    17                                      ;print value of e5 on screen
+    18 00000000 64000000                    a dd 100
+    19 00000004 0F                          b db 15
+    20 00000005 0200                        c dw 2
+    21 00000007 0600                        d dw 6
+    22                                      ;=> e5 = 100 - 15/2 + 9/6 = 100 - 7 + 1 = 94
+    23 00000009 72657A3A20256400            formatmsg db 'rez: %d', 0
+    24                                  
+    25                                  ; our code starts here
+    26                                  segment code use32 class=code
+    27                                      start:
+    28                                          ; ...
+    29                                          ;b/c
+    30                                          ;b->dx:ax
+    31 00000000 668B1D[05000000]                mov bx, word[c]
+    32 00000007 A0[04000000]                    mov al, byte[b]
+    33 0000000C 6698                            cbw
+    34 0000000E 6699                            cwd
+    35 00000010 66F7FB                          idiv bx
+    36                                          ;ax=q,dx=r
+    37 00000013 6689C1                          mov cx, ax
+    38                                          
+    39                                          
+    40                                          ;9/d
+    41 00000016 668B1D[07000000]                mov bx, word[d]
+    42 0000001D B009                            mov al, 9
+    43 0000001F 6698                            cbw
+    44 00000021 6699                            cwd
+    45 00000023 66F7FB                          idiv bx
+    46                                          ;ax=q,dx=r
+    47                                          
+    48                                          
+    49                                          ;-b/c+9/d = -cx+ax = -6
+    50 00000026 6629C8                          sub ax, cx
+    51                                          
+    52                                          
+    53                                          ;a+(-b/c+9/d)
+    54                                          ;ax->eax
+    55 00000029 98                              cwde
+    56 0000002A 0305[00000000]                  add eax, dword[a]
+    57                                          ;eax = a+(-b/c+9/d) = 94
+    58                                          
+    59                                          
+    60                                          ;printing eax
+    61 00000030 50                              push eax
+    62 00000031 68[09000000]                    push dword formatmsg
+    63 00000036 FF15[00000000]                  call[printf]
+    64 0000003C 83C408                          add esp, 4*2
+    65                                          
+    66                                          ; exit(0)
+    67 0000003F 6A00                            push    dword 0      ; push the parameter for exit onto the stack
+    68 00000041 FF15[00000000]                  call    [exit]       ; call exit to terminate the program
